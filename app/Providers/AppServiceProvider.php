@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use Carbon\CarbonInterval;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,18 +27,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::shouldBeStrict(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
-
-        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
-            logger()
-                ->channel('telegram')
-                ->debug('Querying for longer than 500ms: ' . $connection->query()->toSql());
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(30)
+                ->by($request->user()?->id ?: $request->ip());
         });
 
-        $kernel = app(Kernel::class);
-        $kernel->whenRequestLifecycleIsLongerThan(
+        Model::shouldBeStrict(!app()->isProduction());
+
+        DB::listen(function ($query) {
+            if ($query->time > 1000) {
+                logger()
+                    ->channel('telegram')
+                    ->debug('Query longer than 1s: ' . $query['sql']);
+            }
+        });
+
+        app(Kernel::class)->whenRequestLifecycleIsLongerThan(
             CarbonInterval::seconds(5), function () {
                 logger()
                     ->channel('telegram')
