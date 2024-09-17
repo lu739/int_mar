@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Model\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
+    use HasSlug;
 
     protected $fillable = [
         'slug',
@@ -17,14 +19,6 @@ class Product extends Model
         'brand_id',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function (Product $product) {
-            $product->slug = $product->slug ?? str($product->title)->slug();
-        });
-    }
 
     public function brand()
     {

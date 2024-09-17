@@ -19,7 +19,11 @@ class ProductFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(3),
-            'thumbnail' => null,
+            'thumbnail' => $this->faker->file(
+                base_path('tests/Fixtures/images/products'),
+                storage_path('app/public/images/products'),
+                false
+            ),
             'price' => $this->faker->numberBetween(1000, 99999),
             'brand_id' => Brand::query()->inRandomOrder()->first()->id,
         ];
