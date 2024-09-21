@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const closeMobileMenu = document.querySelector('#closeMobileMenu');
 
 	function toggleMobileMenu() {
-		mobileMenu.classList.toggle('hidden');
+		mobileMenu?.classList.toggle('hidden');
 	}
 
 	burgerMenu?.addEventListener('click', function(event) {
