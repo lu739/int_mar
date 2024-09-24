@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Flash;
+namespace Support\Flash;
 
 use Illuminate\Contracts\Session\Session;
 
@@ -11,7 +11,6 @@ class Flash
 
     public function __construct(protected Session $session)
     {
-        $this->session = $session;
     }
 
     public function get(): ?FlashMessage

@@ -1,41 +1,59 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\Auth\SignUpController;
+use App\Http\Controllers\Auth\LostPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {
-    Route::delete('/logout', 'logout')->name('logout');
-    Route::post('/login', 'login')
+Route::controller(SignInController::class)->group(function () {
+    Route::get('/signIn', 'page')
+        ->name('signIn');
+    Route::post('/login', 'handle')
         ->middleware('throttle:auth')
         ->name('login');
-    Route::get('/signUp', 'signUp')->name('signUp');
-    Route::post('/register', 'register')
+    Route::delete('/logout', 'logout')->name('logout');
+});
+
+Route::controller(SignUpController::class)->group(function () {
+    Route::get('/signUp', 'page')
+        ->name('signUp');
+    Route::post('/register', 'handle')
         ->middleware('throttle:auth')
         ->name('register');
-    Route::get('/signIn', 'signIn')->name('signIn');
+});
 
-    Route::get('/lost', 'lost')
+Route::controller(LostPasswordController::class)->group(function () {
+    Route::get('/lost', 'page')
         ->middleware('guest')
         ->name('password.request');
-    Route::post('/lost-password', 'lostPassword')
+    Route::post('/lost-password', 'handle')
         ->middleware('guest')
         ->name('password.email');
-    Route::get('/reset-password/{token}', 'reset')
+});
+
+Route::controller(ResetPasswordController::class)->group(function () {
+    Route::get('/reset-password/{token}', 'page')
         ->middleware('guest')
         ->name('password.reset');
 
-    Route::post('/reset-password', 'resetPassword')
+    Route::post('/reset-password', 'handle')
         ->middleware('guest')
         ->name('password.update');
+});
 
-    Route::get('/auth/socialite/github', 'github')
-        ->name('socialite.github');
 
-    Route::get('/auth/socialite/github/callback', 'githubCallback')
-        ->name('socialite.github.callback');
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('/auth/socialite/{driver}', 'redirect')
+        ->name('socialite');
+
+    Route::get('/auth/socialite/{driver}/callback', 'callback')
+        ->name('socialite.callback');
 });
 
 
