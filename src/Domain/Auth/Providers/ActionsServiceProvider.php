@@ -1,6 +1,6 @@
 <?php
 
-namespace Providers;
+namespace Domain\Auth\Providers;
 
 use Domain\Auth\Actions\RegisterNewUserAction;
 use Domain\Auth\Contracts\RegisterNewUserContract;

@@ -27,7 +27,6 @@
             "Database\\Seeders\\": "database/seeders/",
             "Domain\\": "src/Domain/",
             "Services\\": "src/Services/",
-            "Providers\\": "src/Providers/",
             "Support\\": "src/Support/"
         },
         "files": [

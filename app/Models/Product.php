@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\Model\HasSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Support\Casts\PriceCast;
+use Support\Model\HasSlug;
 
 class Product extends Model
 {
@@ -17,6 +19,12 @@ class Product extends Model
         'thumbnail',
         'price',
         'brand_id',
+        'on_home_page',
+        'sorting',
+    ];
+
+    protected $casts = [
+        'price' => PriceCast::class
     ];
 
 
@@ -28,5 +36,13 @@ class Product extends Model
     public function category()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function scopeHomePage(Builder $query)
+    {
+        $query
+            ->where('on_home_page', true)
+            ->orderBy('sorting', 'asc')
+            ->limit(6);
     }
 }

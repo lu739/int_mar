@@ -1,10 +1,10 @@
 <?php
 
-namespace Providers;
+namespace Domain\Catalog\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class AuthServiceProvider extends ServiceProvider
+class CatalogServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
