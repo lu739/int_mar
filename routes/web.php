@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
@@ -9,6 +10,11 @@ use App\Http\Controllers\Auth\LostPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::get('/', HomeController::class)->name('home');
+
+
+Route::get('/catalog/{category:slug?}', CatalogController::class)
+    ->name('catalog');
+
 
 Route::controller(SignInController::class)->group(function () {
     Route::get('/signIn', 'page')
@@ -45,7 +51,6 @@ Route::controller(ResetPasswordController::class)->group(function () {
         ->middleware('guest')
         ->name('password.update');
 });
-
 
 Route::controller(SocialiteController::class)->group(function () {
     Route::get('/auth/socialite/{driver}', 'redirect')

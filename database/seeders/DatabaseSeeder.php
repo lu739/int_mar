@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         Brand::factory()->count(20)->create();
         Category::factory()->count(10)->create();
-        $products = Product::factory()->count(30)->create();
+        $products = Product::factory()->count(50)->create();
 
         foreach ($products as $product) {
             $product->category()->attach(Category::query()->inRandomOrder()->limit(rand(1, 3))->get());

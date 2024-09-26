@@ -33,7 +33,7 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function category()
+    public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
@@ -44,5 +44,31 @@ class Product extends Model
             ->where('on_home_page', true)
             ->orderBy('sorting', 'asc')
             ->limit(6);
+    }
+    public function scopeFiltered(Builder $query)
+    {
+        $query
+            ->when(request('filters.brands'), function (Builder $query) {
+                $query->whereIn('brand_id', request('filters.brands'));
+            })
+            ->when(request('filters.price'), function (Builder $query) {
+                $query->whereBetween('price', [
+                    request('filters.price.from', 0),
+                    request('filters.price.to')
+                ]);
+            });
+    }
+    public function scopeSorted(Builder $query)
+    {
+        $query
+            ->when(request('sort'), function (Builder $query) {
+                $column = request()->str('sort');
+
+                if ($column->contains(['price', 'title'])) {
+                    $direction = $column->contains('-') ? 'desc' : 'asc';
+
+                    $query->orderBy($column, $direction);
+                }
+            });
     }
 }
