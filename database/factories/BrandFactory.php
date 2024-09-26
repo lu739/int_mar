@@ -23,6 +23,8 @@ class BrandFactory extends Factory
                 storage_path('app/public/images/brands'),
                 false
             ),
+            'on_home_page' => $this->faker->boolean,
+            'sorting' => $this->faker->numberBetween(1, 999),
         ];
     }
 }

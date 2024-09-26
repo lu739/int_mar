@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\SignInController;
@@ -7,9 +8,7 @@ use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\Auth\LostPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 Route::controller(SignInController::class)->group(function () {
     Route::get('/signIn', 'page')

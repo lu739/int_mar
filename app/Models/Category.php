@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\Model\HasSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Support\Model\HasSlug;
 
 class Category extends Model
 {
@@ -14,11 +15,21 @@ class Category extends Model
     protected $fillable = [
         'slug',
         'title',
+        'on_home_page',
+        'sorting',
     ];
 
 
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function scopeHomePage(Builder $query)
+    {
+        $query
+            ->where('on_home_page', true)
+            ->orderBy('sorting', 'asc')
+            ->limit(10);
     }
 }

@@ -19,13 +19,18 @@
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
 
-        @if($message = flash()->get())
-            <div class="{{ $message->class() }}">
-                {{ $message->message() }}
+        @include('parts.header')
+
+        @include('parts.flash')
+
+        <main class="py-16 lg:py-20">
+            <div class="container">
+                @yield('content')
             </div>
-        @endif
+        </main>
 
-        @yield('content')
+        @include('parts.footer')
 
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     </body>
 </html>

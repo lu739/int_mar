@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\Model\HasSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use function Symfony\Component\Translation\t;
+use Support\Model\HasSlug;
 
 class Brand extends Model
 {
@@ -16,11 +16,21 @@ class Brand extends Model
         'slug',
         'title',
         'thumbnail',
+        'on_home_page',
+        'sorting',
     ];
 
 
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function scopeHomePage(Builder $query)
+    {
+        $query
+            ->where('on_home_page', true)
+            ->orderBy('sorting', 'asc')
+            ->limit(6);
     }
 }
