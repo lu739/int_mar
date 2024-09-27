@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         $products = Product::factory()->count(50)->create();
 
         foreach ($products as $product) {
-            $product->category()->attach(Category::query()->inRandomOrder()->limit(rand(1, 3))->get());
+            $product->categories()->attach(Category::query()->inRandomOrder()->limit(rand(1, 3))->get());
         }
     }
 }
