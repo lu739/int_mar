@@ -5,13 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Support\Casts\PriceCast;
 use Support\Model\HasSlug;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+
 
 class Product extends Model
 {
     use HasFactory;
     use HasSlug;
+    use Searchable;
 
     protected $fillable = [
         'slug',
@@ -21,11 +26,23 @@ class Product extends Model
         'brand_id',
         'on_home_page',
         'sorting',
+        'text',
     ];
 
     protected $casts = [
         'price' => PriceCast::class
     ];
+
+    #[SearchUsingPrefix(['id'])]
+    #[SearchUsingFullText(['title', 'text'])]
+    public function toSearchableArray()
+    {
+        return [
+            'id' => (int) $this->id,
+            'title' => $this->title,
+            'text' => $this->text,
+        ];
+    }
 
 
     public function brand()
