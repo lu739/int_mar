@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Filters\BrandFilter;
+use App\Filters\PriceFilter;
 use Carbon\CarbonInterval;
+use Domain\Catalog\Filters\FilterManager;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\Request;
@@ -19,9 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(
-            DomainServiceProvider::class
-        );
+        $this->app->singleton(FilterManager::class);
     }
 
     /**
@@ -56,5 +56,11 @@ class AppServiceProvider extends ServiceProvider
                     ->debug('Request lifecycle is longer than 5 seconds: ' . request()->url());
             }
         );
+
+
+        app(FilterManager::class)->registerFilters([
+            new PriceFilter(),
+            new BrandFilter(),
+        ]);
     }
 }

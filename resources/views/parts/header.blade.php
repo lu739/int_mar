@@ -15,10 +15,11 @@
                         </svg>
                     </button>
                 </form>
-                <nav class="hidden 2xl:flex gap-8">
-                    <a href="index.html" class="text-white hover:text-pink font-bold">Главная</a>
-                    <a href="catalog.html" class="text-white hover:text-pink font-bold">Каталог товаров</a>
-                    <a href="cart.html" class="text-white hover:text-pink font-bold">Корзина</a>
+                <nav class="2xl:flex gap-8">
+                    @foreach($menu->all() as $item)
+                        <a href="{{$item->link()}}" class="text-white hover:text-pink font-bold">{{$item->label()}}</a>
+                    @endforeach
+{{--                    <a href="{{route('basket')}}" class="text-white hover:text-pink font-bold">Корзина</a>--}}
                 </nav>
             </div><!-- /.header-menu -->
             <div class="header-actions flex items-center gap-3 md:gap-5">
