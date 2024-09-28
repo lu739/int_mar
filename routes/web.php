@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\SignInController;
@@ -14,6 +15,9 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/catalog/{category:slug?}', CatalogController::class)
     ->name('catalog');
+
+Route::get('/product/{product:slug}', ProductController::class)
+    ->name('product.show');
 
 
 Route::controller(SignInController::class)->group(function () {

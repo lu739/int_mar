@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    public function __invoke(?Category $category)
+    public function __invoke(Category $category)
     {
         $categories = Category::query()
             ->has('products')
