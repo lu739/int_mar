@@ -56,6 +56,12 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class)
+            ->withPivot('value');
+    }
+
     public function scopeHomePage(Builder $query)
     {
         $query
