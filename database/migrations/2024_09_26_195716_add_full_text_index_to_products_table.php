@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->text('text')->nullable();
-            $table->fullText(['title', 'text']);
+            if (app()->environment() !== 'testing') {
+                $table->fullText(['title', 'text']);
+            }
         });
     }
 
@@ -24,7 +26,9 @@ return new class extends Migration
     {
         if (!app()->isProduction()) {
             Schema::table('products', function (Blueprint $table) {
-                $table->dropFullText(['title']);
+                if (app()->environment() !== 'testing') {
+                    $table->dropFullText(['title', 'text']);
+                }
                 $table->dropColumn('text');
             });
         }

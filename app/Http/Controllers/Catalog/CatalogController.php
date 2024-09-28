@@ -21,10 +21,10 @@ class CatalogController extends Controller
             ->has('products')
             ->get();
 
-        $products = Product::search('non')
+        $products = Product::search('')
             ->query(function (Builder $query) use ($category) {
                 $query
-                    ->when($category->exists(), function (Builder $query) use ($category) {
+                    ->when($category->id, function (Builder $query) use ($category) {
                         $query->whereRelation(
                             'categories',
                             'categories.id',
