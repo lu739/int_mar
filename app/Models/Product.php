@@ -78,15 +78,6 @@ class Product extends Model
     }
     public function scopeSorted(Builder $query)
     {
-        $query
-            ->when(request('sort'), function (Builder $query) {
-                $column = request()->str('sort');
-
-                if ($column->contains(['price', 'title'])) {
-                    $direction = $column->contains('-') ? 'desc' : 'asc';
-
-                    $query->orderBy($column, $direction);
-                }
-            });
+        sorter()->run($query);
     }
 }
