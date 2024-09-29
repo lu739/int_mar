@@ -6,6 +6,7 @@ use App\Filters\BrandFilter;
 use App\Filters\PriceFilter;
 use Carbon\CarbonInterval;
 use Domain\Catalog\Filters\FilterManager;
+use Domain\Catalog\Sorter\Sorter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Kernel;
@@ -62,5 +63,12 @@ class AppServiceProvider extends ServiceProvider
             new PriceFilter(),
             new BrandFilter(),
         ]);
+
+        $this->app->bind(Sorter::class, function () {
+            return new Sorter([
+                'title',
+                'price',
+            ]);
+        });
     }
 }
