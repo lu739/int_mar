@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $product) {
             $product->categories()->attach(Category::query()->inRandomOrder()->limit(rand(1, 3))->get());
+            $product->brand()->associate(Brand::query()->inRandomOrder()->first());
 
             $properties = Property::query()->inRandomOrder()->limit(rand(2, 5))->get();
             $product->properties()->sync(
