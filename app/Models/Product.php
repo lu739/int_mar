@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProductJsonPropertiesJob;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,11 +29,22 @@ class Product extends Model
         'on_home_page',
         'sorting',
         'text',
+        'json_properties',
     ];
 
     protected $casts = [
-        'price' => PriceCast::class
+        'price' => PriceCast::class,
+        'json_properties' => 'array'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::created(function (self $product) {
+            ProductJsonPropertiesJob::dispatch($product)->delay(now()->addSeconds(10));
+        });
+    }
 
     #[SearchUsingPrefix(['id'])]
     #[SearchUsingFullText(['title', 'text'])]
