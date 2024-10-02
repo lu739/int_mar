@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use Domain\Cart\CartManager;
 use Domain\Catalog\Filters\FilterManager;
 use Domain\Catalog\Sorter\Sorter;
 use Support\Flash\Flash;
@@ -26,6 +27,14 @@ if (!function_exists('sorter')) {
     function sorter(): Sorter
     {
         return app(Sorter::class);
+    }
+}
+
+if (!function_exists('cart')) {
+
+    function cart(): CartManager
+    {
+        return app(CartManager::class);
     }
 }
 
