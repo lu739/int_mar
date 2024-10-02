@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\AfterSessionRegeneratedEvent;
 use App\Filters\BrandFilter;
 use App\Filters\PriceFilter;
 use Carbon\CarbonInterval;
+use Domain\Cart\CartManager;
 use Domain\Catalog\Filters\FilterManager;
 use Domain\Catalog\Sorter\Sorter;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(FilterManager::class);
+
+        $this->app->bind(Sorter::class, function () {
+            return new Sorter([
+                'title',
+                'price',
+            ]);
+        });
     }
 
     /**
@@ -58,17 +68,13 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-
         app(FilterManager::class)->registerFilters([
             new PriceFilter(),
             new BrandFilter(),
         ]);
 
-        $this->app->bind(Sorter::class, function () {
-            return new Sorter([
-                'title',
-                'price',
-            ]);
+        Event::listen(AfterSessionRegeneratedEvent::class, function (AfterSessionRegeneratedEvent $event) {
+            cart()->updateStorageId($event->old, $event->new);
         });
     }
 }

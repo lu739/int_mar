@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Support\SessionRegenerator;
 use Throwable;
 
 class SocialiteController extends Controller
@@ -30,7 +31,9 @@ class SocialiteController extends Controller
             'password' => bcrypt(Str::random(10)),
         ]);
 
-        auth()->login($user);
+        SessionRegenerator::run(session()->getId(), function () use ($user) {
+            auth()->login($user);
+        });
 
         return redirect()->intended('/');
     }
