@@ -6,7 +6,6 @@ use App\Events\AfterSessionRegeneratedEvent;
 use App\Filters\BrandFilter;
 use App\Filters\PriceFilter;
 use Carbon\CarbonInterval;
-use Domain\Cart\CartManager;
 use Domain\Catalog\Filters\FilterManager;
 use Domain\Catalog\Sorter\Sorter;
 use Illuminate\Cache\RateLimiting\Limit;

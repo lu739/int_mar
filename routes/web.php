@@ -3,6 +3,7 @@
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Middleware\CatalogViewMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -82,4 +83,16 @@ Route::controller(SocialiteController::class)->group(function () {
         ->name('socialite.callback');
 });
 
+Route::controller(OrderController::class)
+    ->prefix('orders')
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('orders.index');
+        Route::get('/{order}', 'show')
+            ->name('order.show');
+        Route::get('/order/checkout', 'checkout')
+            ->name('order.checkout');
+        Route::post('/order/checkout', 'handle')
+            ->name('order.handle');
+    });
 

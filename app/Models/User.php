@@ -53,4 +53,9 @@ class User extends Authenticatable
             get: fn() => 'https://ui-avatars.com/api/?name=' . $this->name,
         );
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

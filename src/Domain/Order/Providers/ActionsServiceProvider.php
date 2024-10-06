@@ -1,10 +1,10 @@
 <?php
 
-namespace Domain\Auth\Providers;
+namespace Domain\Order\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class AuthServiceProvider extends ServiceProvider
+class ActionsServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
@@ -12,5 +12,4 @@ class AuthServiceProvider extends ServiceProvider
             ActionsServiceProvider::class
         );
     }
-
 }

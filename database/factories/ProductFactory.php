@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,6 +27,7 @@ class ProductFactory extends Factory
             'on_home_page' => $this->faker->boolean,
             'sorting' => $this->faker->numberBetween(1, 999),
             'text' => $this->faker->sentence(10),
+            'quantity' => $this->faker->numberBetween(0, 99),
         ];
     }
 }
