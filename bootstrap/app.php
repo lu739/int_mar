@@ -14,13 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // $exceptions->render(function (Throwable $e) {
-        //     if ($e instanceof DomainException) {
-        //         flash()->alert($e->getMessage());
-        //
-        //         return session()->previousUrl() ?
-        //             redirect()->back() :
-        //             redirect()->route('home');
-        //     }
-        // });
+        $exceptions->render(function (Throwable $e) {
+            if ($e instanceof DomainException) {
+                flash()->alert($e->getMessage());
+
+                return session()->previousUrl() ?
+                    redirect()->back() :
+                    redirect()->route('home');
+            }
+        });
     })->create();
